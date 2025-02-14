@@ -27,7 +27,7 @@ pipeline {
 
     stage('SonarQube Analysis') {
   steps {
-    sh 'mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.host.url=http://35.180.137.8:9000/ -Dsonar.login=squ_32789bcdadb6e4337e432d6cbc100c2a1a14fde5'
+    sh 'mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.host.url=http://47.129.8.114:9000/ -Dsonar.login=squ_32789bcdadb6e4337e432d6cbc100c2a1a14fde5'
   }
 }
 
@@ -35,8 +35,8 @@ pipeline {
    stage('Check code coverage') {
             steps {
                 script {
-                    def token = "squ_32789bcdadb6e4337e432d6cbc100c2a1a14fde5"
-                    def sonarQubeUrl = "http://35.180.137.8:9000/api"
+                    def token = "squ_1886530c098b6b9197a434fd809b04704c782129"
+                    def sonarQubeUrl = "http://47.129.8.114:9000/api"
                     def componentKey = "com.codeddecode:restaurantlisting"
                     def coverageThreshold = 80.0
 
@@ -63,8 +63,8 @@ pipeline {
       stage('Docker Build and Push') {
       steps {
           sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
-          sh 'docker build -t codedecode25/restaurant-listing-service:${VERSION} .'
-          sh 'docker push codedecode25/restaurant-listing-service:${VERSION}'
+          sh 'docker build -t harigoutham/restaurant-listing-service:${VERSION} .'
+          sh 'docker push harigoutham/restaurant-listing-service:${VERSION}'
       }
     } 
 
@@ -80,10 +80,10 @@ pipeline {
 
     stage('Update Image Tag in GitOps') {
       steps {
-         checkout scmGit(branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[ credentialsId: 'git-ssh', url: 'git@github.com:udemy-dev-withK8s-AWS-codedecode/deployment-folder.git']])
+         checkout scmGit(branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[ credentialsId: 'git-ssh', url: 'git@github.com:HariGoutham/deployment-folder.git']])
         script {
        sh '''
-          sed -i "s/image:.*/image: codedecode25\\/restaurant-listing-service:${VERSION}/" aws/restaurant-manifest.yml
+          sed -i "s/image:.*/image: harigoutham\\/restaurant-listing-service:${VERSION}/" aws/restaurant-manifest.yml
         '''
           sh 'git checkout master'
           sh 'git add .'
