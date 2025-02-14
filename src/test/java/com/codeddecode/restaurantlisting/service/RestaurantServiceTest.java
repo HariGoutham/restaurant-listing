@@ -52,6 +52,7 @@ public class RestaurantServiceTest {
         }
 
         // Verify that the repository method was called
+        // test
         verify(restaurantRepo, times(1)).findAll();
     }
 
