@@ -19,9 +19,6 @@ public class RestaurantService {
 
     @Autowired
     RestaurantRepo restaurantRepo;
-
-
-    
     
     public List<RestaurantDTO> findAllRestaurants() {
         List<Restaurant> restaurants = restaurantRepo.findAll();
