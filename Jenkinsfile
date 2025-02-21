@@ -27,7 +27,7 @@ pipeline {
 
     stage('SonarQube Analysis') {
   steps {
-    sh 'mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.host.url=http://47.129.8.114:9000/ -Dsonar.login=squ_1886530c098b6b9197a434fd809b04704c782129'
+    sh 'mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.host.url=http://54.90.174.242:9000/ -Dsonar.login=squ_50fe122883e72ab899a144e4a007b32fe2761afc'
   }
 }
 
@@ -35,8 +35,8 @@ pipeline {
    stage('Check code coverage') {
             steps {
                 script {
-                    def token = "squ_1886530c098b6b9197a434fd809b04704c782129"
-                    def sonarQubeUrl = "http://47.129.8.114:9000/api"
+                    def token = "squ_50fe122883e72ab899a144e4a007b32fe2761afc"
+                    def sonarQubeUrl = "http://54.90.174.242:9000/api"
                     def componentKey = "com.codeddecode:restaurantlisting"
                     def coverageThreshold = 80.0
 
@@ -80,7 +80,7 @@ pipeline {
 
     stage('Update Image Tag in GitOps') {
       steps {
-         checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[ credentialsId: 'git-ssh', url: 'git@github.com:HariGoutham/deployment-folder.git']])
+         checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[ credentialsId: 'git-ssh', url: 'git@github.com:angular-spring-aws-docker-k8s-cicd/deployment-folder.git']])
         script {
        sh '''
           sed -i "s/image:.*/image: harigoutham\\/restaurant-listing-service:${VERSION}/" aws/restaurant-manifest.yml
